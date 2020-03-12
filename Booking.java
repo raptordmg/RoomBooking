@@ -15,5 +15,7 @@ public class Booking {
         this.hasSmartboard = hasSmartboard;
         this.hasPrinter = hasPrinter;
         this.clientName = clientName;
+
+        Json bookingJson = new Json("Bookings.json", new String[] {"seatCapacity", "requiredComputers", "breakoutAcceptable", "hasSmartboard", "hasPrinter", "clientName"});
     }
 }

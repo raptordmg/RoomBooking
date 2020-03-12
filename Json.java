@@ -12,10 +12,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Json {
+    private String jsonName;
+    private String[] fieldNames;
+
+    public Json(String jsonName, String[] fieldNames) {
+        this.jsonName = jsonName;
+        this.fieldNames = fieldNames;
+    }
+
     /*
     Makes sure the file exists if not make one
      */
-    private void createJson(String jsonFileName) {
+    private void checkJson(String jsonFileName) {
         try (FileReader fileReader = new FileReader(jsonFileName)) { }
         catch (IOException e) {
             Alert IOError = new Alert(Alert.AlertType.WARNING, jsonFileName + " not found\nCreating new file");
@@ -33,7 +41,7 @@ public class Json {
     Allows the program to save a room
      */
     public void addItemToJson(String jsonFileName,JSONObject newItem) {
-        createJson(jsonFileName);
+        checkJson(jsonFileName);
         JSONParser roomParser = new JSONParser();
         JSONArray itemList = new JSONArray();
 
@@ -55,5 +63,22 @@ public class Json {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public JSONArray readJson(String jsonName) {
+        checkJson(jsonName);
+        JSONParser jsonParser = new JSONParser();
+        JSONArray jsonContents = new JSONArray();
+
+        try(FileReader reader = new FileReader(jsonName)) {
+            Object jsonObject = jsonParser.parse(reader);
+            jsonContents = (JSONArray) jsonObject;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+        return jsonContents;
     }
 }
